@@ -15628,8 +15628,8 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "f:\\C#\\LessonMvc\\Views\\User\\login.cshtml",
-      "TargetPath": "Views\\User\\login.cshtml",
+      "FilePath": "f:\\C#\\LessonMvc\\Views\\User\\Login.cshtml",
+      "TargetPath": "Views\\User\\Login.cshtml",
       "FileKind": "mvc"
     },
     {

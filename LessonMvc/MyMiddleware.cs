@@ -10,31 +10,26 @@ using System.Threading;
 
 public class MyMiddleware
 {
+    private const string RESPONSE_HEADER_RESPONSE_TIME = "X-Response-Time-ms";
+    // Handle to the next Middleware in the pipeline  
     private readonly RequestDelegate _next;
-
-    public MyMiddleware(RequestDelegate next, ILoggerFactory logFactory)
+    public MyMiddleware(RequestDelegate next)
     {
         _next = next;
     }
-
-    public async Task Invoke(HttpContext httpContext)
+    public Task InvokeAsync(HttpContext context)
     {
-        var sw = new Stopwatch();
-        sw.Start();
-        string url = httpContext.Request.Path;
-        if (url == "/User/Index")
-        {
-            var name = httpContext.Request.Query["s"];
-            if (!String.IsNullOrWhiteSpace(name))
-            {
-                httpContext.Request.Headers.Add("name", name);
-                Thread.Sleep(2000);
-                sw.Stop();
-            }
-            await httpContext.Response.WriteAsync($"<h1> {name} </h1><h2>{sw.Elapsed}</h2>");
-            return;
-        }
-        await _next(httpContext);
+        // Start the Timer using Stopwatch  
+        var watch = new Stopwatch();
+        watch.Start();
+        context.Response.OnStarting(() =>
+        { 
+            watch.Stop();
+            var responseTimeForCompleteRequest = watch.ElapsedMilliseconds;
+            context.Response.Headers[RESPONSE_HEADER_RESPONSE_TIME] = responseTimeForCompleteRequest.ToString();
+            return Task.CompletedTask;
+        }); 
+        return this._next(context);
     }
 }
 

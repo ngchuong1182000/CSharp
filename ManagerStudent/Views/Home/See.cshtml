@@ -1,0 +1,24 @@
+@using ManagerStudent.Models;
+@model IEnumerable<Student>;
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Password</th>
+            <th scope="col">isAdmin</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <th scope="row">@item.UserName</th>
+                <td>@item.Password</td>
+                <td>@item.isAdmin</td>
+            </tr>
+        }
+    </tbody>
+</table>

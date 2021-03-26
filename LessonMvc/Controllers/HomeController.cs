@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LessonMvc.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace LessonMvc.Controllers
 {
@@ -21,12 +22,26 @@ namespace LessonMvc.Controllers
         public IActionResult Index()
         {
             ViewBag.temp = "hiihi";
+            Response.Cookies.Delete("user");
             return View();
         }
 
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public string SetSession()
+        {
+            HttpContext.Session.SetString("session1", "hihi");
+            HttpContext.Session.SetString("session2", "haha");
+            return "this is set session";
+        }
+        public string GetSession()
+        {
+            var ss1 = HttpContext.Session.GetString("session1");
+            var ss2 = HttpContext.Session.GetString("session2");
+            return (ss1 + ss2);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

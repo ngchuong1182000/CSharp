@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using LessonMvc.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace LessonMvc.Controllers
 {
@@ -16,6 +13,9 @@ namespace LessonMvc.Controllers
         {
             Person student = new Person("Chu Nguyên ", "Chương", "male", new DateTime(2000, 11, 08), 0987374741, "bac giang", true);
             listPerson.Add(student);
+            CookieOptions cookieOptions = new CookieOptions();
+            cookieOptions.Expires = DateTime.Now.AddMinutes(1);
+            Response.Cookies.Append("user", student.lastName, cookieOptions);
             return View(listPerson);
         }
         public IActionResult Login()
